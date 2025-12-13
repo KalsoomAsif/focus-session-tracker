@@ -10,8 +10,8 @@ const app = express();
 
 app.use(cors({
   origin: [
-    'http://localhost:5173',
-    'https://cheery-cannoli-aaa4c9.netlify.app'
+    "http://localhost:5173",
+    "https://focus-session-tracker.netlify.app"
   ],
   credentials: true
 }));
