@@ -21,16 +21,20 @@ app.use(cors({
   origin: function (origin, callback) {
     if (!origin) return callback(null, true);
 
-    if (allowedOrigins.includes(origin)) {
+    if (
+      origin.startsWith("http://localhost:5173") ||
+      origin.endsWith(".netlify.app")
+    ) {
       return callback(null, true);
     }
 
     return callback(new Error("Not allowed by CORS"));
   },
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type"],
   credentials: true
 }));
+
 
 // Allow preflight requests
 app.options("*", cors());
