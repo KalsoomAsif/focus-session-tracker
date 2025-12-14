@@ -78,7 +78,9 @@ export default function App() {
   async function fetchSessions() {
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/sessions`);
+      const res = await fetch(`${API_BASE}/sessions`, {
+        credentials: "include",
+      });
       const data = await res.json();
       setSessions(Array.isArray(data) ? data : []);
     } catch {
@@ -92,7 +94,7 @@ export default function App() {
     fetchSessions();
   }, []);
 
-    async function addSession() {
+  async function addSession() {
     if (!canSubmit) return;
 
     const payload = {
@@ -106,6 +108,7 @@ export default function App() {
       const res = await fetch(`${API_BASE}/sessions`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify(payload),
       });
 
@@ -134,6 +137,7 @@ export default function App() {
       const res = await fetch(`${API_BASE}/sessions/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ completed: !completed }),
       });
       if (res.ok) fetchSessions();
@@ -147,7 +151,10 @@ export default function App() {
     if (!ok) return;
 
     try {
-      const res = await fetch(`${API_BASE}/sessions/${id}`, { method: "DELETE" });
+      const res = await fetch(`${API_BASE}/sessions/${id}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
       if (res.ok) fetchSessions();
     } catch {
       // no-op
@@ -241,17 +248,16 @@ export default function App() {
               Add Session
             </button>
 
-
-            <div className="cardHint" style={{ marginTop: 10 }}>
-        
-            </div>
+            <div className="cardHint" style={{ marginTop: 10 }}></div>
           </form>
         </div>
 
         <div className="card">
           <div className="cardTitleRow">
             <h2 className="cardTitle">Recent Sessions</h2>
-            <span className="cardHint">{loading ? "Loading..." : `${sessions.length} total`}</span>
+            <span className="cardHint">
+              {loading ? "Loading..." : `${sessions.length} total`}
+            </span>
           </div>
 
           <div className="sessionList">
@@ -275,13 +281,21 @@ export default function App() {
                       <div>
                         <p className="sessionTitle">{s.title || "Focus Session"}</p>
 
-                        <div style={{ marginTop: 6, display: "flex", gap: 8, flexWrap: "wrap" }}>
+                        <div
+                          style={{
+                            marginTop: 6,
+                            display: "flex",
+                            gap: 8,
+                            flexWrap: "wrap",
+                          }}
+                        >
                           <span className={`badge ${completed ? "badgeDone" : "badgeActive"}`}>
                             {completed ? "✓ Completed" : "• Active"}
                           </span>
 
                           <span className="badge" style={{ background: "rgba(255,255,255,0.25)" }}>
-                            {"★".repeat(Math.max(1, Math.min(5, rating)))}{"☆".repeat(5 - Math.max(1, Math.min(5, rating)))}
+                            {"★".repeat(Math.max(1, Math.min(5, rating)))}
+                            {"☆".repeat(5 - Math.max(1, Math.min(5, rating)))}
                           </span>
                         </div>
 
