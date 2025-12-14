@@ -92,8 +92,7 @@ export default function App() {
     fetchSessions();
   }, []);
 
-  async function addSession(e) {
-    e.preventDefault();
+    async function addSession() {
     if (!canSubmit) return;
 
     const payload = {
@@ -111,7 +110,9 @@ export default function App() {
       });
 
       if (!res.ok) {
-        await res.json().catch(() => {});
+        const txt = await res.text().catch(() => "");
+        console.error("POST /sessions failed:", res.status, txt);
+        alert("Add Session failed. Check Console for details.");
         return;
       }
 
@@ -121,9 +122,10 @@ export default function App() {
       setDurationMinutes("");
       setFocusRating(3);
 
-      fetchSessions();
-    } catch {
-      // no-op
+      await fetchSessions();
+    } catch (err) {
+      console.error("POST /sessions error:", err);
+      alert("Add Session failed. Check Console for details.");
     }
   }
 
@@ -188,7 +190,12 @@ export default function App() {
             <span className="cardHint"></span>
           </div>
 
-          <form onSubmit={addSession}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              addSession();
+            }}
+          >
             <div className="formRow">
               <div className="label">Title</div>
               <input
@@ -225,9 +232,15 @@ export default function App() {
               <Stars value={focusRating} onChange={setFocusRating} />
             </div>
 
-            <button className="primaryBtn" disabled={!canSubmit} type="submit">
+            <button
+              className="primaryBtn"
+              disabled={!canSubmit}
+              type="button"
+              onClick={addSession}
+            >
               Add Session
             </button>
+
 
             <div className="cardHint" style={{ marginTop: 10 }}>
         
