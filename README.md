@@ -81,13 +81,13 @@ Deletes a focus session by ID.
 
 Body example:
 ```json
-{
+/*{
   "title": "Finish Lab 08",
   "subject": "CS195",
   "duration": 25,
   "rating": 4,
   "completed": false
-}
+}*/
 
 
 🚀 Deployment Notes
