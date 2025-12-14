@@ -76,18 +76,7 @@ PATCH /sessions/:id
 Updates an existing focus session (e.g., marking it as completed or undoing completion).
 
 DELETE /sessions/:id  
-Deletes a focus session by ID.
-
-
-Body example:
-```json
-/*{
-  "title": "Finish Lab 08",
-  "subject": "CS195",
-  "duration": 25,
-  "rating": 4,
-  "completed": false
-}*/
+Delete a focus session by ID.
 
 
 🚀 Deployment Notes
